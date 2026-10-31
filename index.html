@@ -92,6 +92,8 @@ button{font:inherit;cursor:pointer}
 .status{display:inline-block;font-weight:800;font-size:.82rem;padding:2px 10px;border-radius:999px;margin-bottom:6px}
 .ok{background:var(--okbg);color:var(--ok)} .warn{background:var(--warnbg);color:var(--warn)} .bad{background:var(--badbg);color:var(--bad)}
 .route{margin:6px 0 0}
+.gbtn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:9px 14px;min-height:42px;border-radius:999px;background:var(--surface);border:2px solid var(--pink);color:var(--pinkText);font-weight:800;font-size:.92rem;text-decoration:none}
+.gbtn svg{width:18px;height:18px;flex:none}
 .rafi{margin-top:10px;padding:10px 12px;border-radius:14px;background:var(--peach);font-size:.92rem}
 .b{display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;font-weight:800;font-size:.8em;color:#fff;vertical-align:.08em;margin:0 1px;font-family:Helvetica,Arial,sans-serif}
 .b.y{color:#000}
@@ -121,6 +123,7 @@ dl.facts dd{margin:2px 0 0}
 .mapbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0}
 .mapbar .btn{padding:10px 14px;min-height:42px;font-size:.92rem}
 .leaflet-container{font:inherit}
+@media (prefers-color-scheme: dark){.leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}}
 .leaflet-popup-content{font-size:.95rem;line-height:1.4}
 .pin{position:relative;width:40px;height:40px}
 .pin svg{width:40px;height:40px;filter:drop-shadow(0 2px 2px rgba(74,29,62,.35))}
@@ -154,7 +157,7 @@ dl.facts dd{margin:2px 0 0}
 
   <h2>Update her split</h2>
   <div class="panel">
-    <p class="note">When the tracker shows a new split, enter it here. Every time on every tab recalculates.</p>
+    <p class="note">When the tracker shows a new split, enter it here. Her pass times, our leave times, the buffers and her dot on the map all recalculate from her real pace.</p>
     <div class="two">
       <div><label for="liveMile">Last split she crossed</label>
         <select id="liveMile"><option value="">No update yet</option><option value="3.1">5K (3.1 mi)</option><option value="6.2">10K (6.2 mi)</option><option value="9.3">15K (9.3 mi)</option><option value="12.4">20K (12.4 mi)</option><option value="13.1">Half (13.1 mi)</option><option value="15.5">25K (15.5 mi)</option><option value="18.6">30K (18.6 mi)</option><option value="21.7">35K (21.7 mi)</option><option value="24.9">40K (24.9 mi)</option></select></div>
@@ -192,7 +195,7 @@ dl.facts dd{margin:2px 0 0}
     <button class="btn alt" id="fitAll">Whole course</button>
   </div>
   <div id="mapWrap"><div id="map" role="application" aria-label="Course map"></div></div>
-  <div class="legend"><span><i style="background:#FF8B3D;box-shadow:0 0 0 2px #FF4F9A"></i>Chacha, estimated</span><span><i style="background:#FF4F9A"></i>Our spots</span><span><i style="background:#2F7BFF"></i>You</span></div>
+  <div class="legend"><span><i style="background:#FF8B3D;box-shadow:0 0 0 2px #FF4F9A"></i>Chacha, estimated</span><span><i style="background:#FF4F9A"></i>Our spots</span><span><i style="background:#fff;box-shadow:0 0 0 2px #FF8B3D"></i>Warwick</span><span><i style="background:#2F7BFF"></i>You</span></div>
   <p class="note" id="mapNote" style="margin-top:6px">Her dot is an estimate from her pace and latest split, not live GPS. The course line is approximate; follow the marshals and barriers on the day.</p>
 </section>
 
@@ -231,11 +234,20 @@ dl.facts dd{margin:2px 0 0}
     <label for="hoHand">Hand it to her</label><select id="hoHand"><option value="">Either hand</option><option value="left">Left hand</option><option value="right">Right hand</option></select>
   </div>
 
+  <h2>Morning meet-up</h2>
+  <div class="panel">
+    <label for="meetup">Before heading to Brooklyn</label>
+    <select id="meetup"><option value="warwick">Meet at the Warwick New York lobby</option><option value="none">No meet-up, go straight from our hotel</option></select>
+    <p class="note" style="margin:8px 0 0">The Warwick is at 65 W 54th St, on the corner of Sixth Ave, where her parents are staying. The lobby is indoors with restrooms, and 57 St–7 Av is 3 blocks away. The N from there goes straight to Fourth Ave & 59th St, with no transfer.</p>
+  </div>
+
   <h2>After the finish</h2>
   <div class="panel">
     <p>Finishers exit onto Central Park West 20 to 30 minutes after finishing. The Family Reunion area is West 69th to 71st Streets between Columbus Ave and Central Park West, 11 am to 6 pm, with bag screening.</p>
     <label for="meet">Meeting spot</label><input id="meet">
     <label for="backup">Backup if phones fail</label><input id="backup">
+    <label for="meet3">Third option</label><input id="meet3">
+    <p class="note" style="margin:8px 0 0">Go in order: the meeting spot first, then the backup 45 minutes after her finish, then the third option.</p>
   </div>
 
   <h2>Her race</h2>
@@ -258,6 +270,7 @@ dl.facts dd{margin:2px 0 0}
     <dt>Atlantic Av–Barclays is the underpass</dt><dd>Entrances on both sides. The D, N and R are on the west side; the 2, 3, 4 and Q are on the east (Atlantic Terminal) side. Walk through the station to switch sides.</dd>
     <dt>The Q is our train</dt><dd>86 St–2 Av to Atlantic Av–Barclays and to 57 St–7 Av by the finish. The A and C are rerouted this weekend.</dd>
     <dt>Stations near the finish</dt><dd>Some stairways at 59 St–Columbus Circle, 66 St, 72 St and 81 St may be closed or exit-only.</dd>
+    <dt>Google Maps doesn't know about the race</dt><dd>It can't see street closures or which side of the course we need, and it may suggest the rerouted A or C. Use it to navigate, but follow our route notes for which train and which exit.</dd>
     <dt>The flag</dt><dd>Bring one you can wave without a pole, in case poles aren't allowed through screening.</dd>
     <dt>When phones jam</dt><dd>Service gets spotty on First Ave and at the finish. Texts get through when page loads don't.</dd>
     <dt>Weather</dt><dd>Sunny, light wind: low 50s at the start, low 60s in the afternoon.</dd>
@@ -318,6 +331,14 @@ const LEGS={
  "hotel>first":[5,"Walk to First Ave on the west side."],
  "hotel>fifth":[15,"Walk west on 86th St to Fifth Ave, then north to 92nd."],
  "hotel>finish":[40,"Walk to 86 St–2 Av. [Q] to 57 St–7 Av, then north on the west side of Broadway to W 62nd St."],
+ "hotel>warwick":[25,"Walk to 86 St–2 Av. [Q] to 57 St–7 Av. Walk south on Seventh Ave to 54th St, then east to Sixth Ave."],
+ "warwick>fourth":[50,"Walk 3 blocks to 57 St–7 Av (57th & Seventh). Brooklyn-bound [N] straight to 59 St; it runs express in Brooklyn. Come up on the west side of Fourth Ave."],
+ "warwick>lafayette":[50,"Walk to 57 St–7 Av. [Q] or [N] to Atlantic Av–Barclays Ctr. Exit on the Atlantic Terminal side, walk east on Atlantic Ave to Washington Ave, then north to Lafayette."],
+ "warwick>bedford":[45,"Walk to 57 St–7 Av. [N] or [Q] to 14 St–Union Sq, [L] to Lorimer St, walk west on Metropolitan Ave."],
+ "warwick>greenpoint":[40,"Walk to 5 Av/53 St. [E] to Court Sq, then [G] to Nassau Av."],
+ "warwick>first":[25,"Walk to 57 St–7 Av. [Q] to 86 St–2 Av, walk east to First Ave."],
+ "warwick>fifth":[35,"Walk to 57 St–7 Av. [Q] to 86 St–2 Av, walk west on 86th to Fifth Ave."],
+ "warwick>finish":[30,"Walk west on 54th St to Broadway, then north on the west side of Broadway to W 62nd St. Stay west of Columbus Circle."],
  "dtbk>fourth":[30,"[R] from Jay St–MetroTech or Court St to 59 St. Come up on the west side of Fourth Ave."],
  "dtbk>lafayette":[30,"[2] [3] from Borough Hall or Nevins St one stop to Atlantic Av–Barclays Ctr, which gets him under the course. Exit on the Atlantic Terminal side, walk east on Atlantic Ave to Washington Ave, then north to Lafayette."],
  "dtbk>bedford":[35,"[G] from Hoyt–Schermerhorn Sts to Metropolitan Av, walk west."],
@@ -351,16 +372,26 @@ const LEGS={
 /* Approximate course line. Third value = mile anchor. */
 const COURSE=[[40.6025,-74.061,0],[40.6052,-74.0518],[40.6115,-74.04],[40.615,-74.033,2],[40.6162,-74.0306],[40.6175,-74.03],[40.6225,-74.0281,3],[40.6349,-74.0235],[40.6392,-74.0196,4],[40.6414,-74.0178,4.2],[40.65,-74.009,5],[40.6553,-74.0035],[40.662,-73.9967,6],[40.6738,-73.986,7],[40.6772,-73.9831],[40.6838,-73.9783],[40.6866,-73.979,8],[40.6876,-73.9659,8.7],[40.6887,-73.9597,9],[40.6893,-73.9547],[40.6955,-73.9558],[40.7003,-73.9575,10],[40.7063,-73.962],[40.7095,-73.9625,11],[40.7145,-73.96,11.4],[40.7176,-73.9566],[40.7215,-73.953],[40.7232,-73.952],[40.7244,-73.9512,12.4],[40.7305,-73.9542],[40.7335,-73.952],[40.7365,-73.9515],[40.74,-73.9525,13.1],[40.743,-73.9535],[40.7445,-73.9505],[40.747,-73.947],[40.7495,-73.943,14],[40.7522,-73.94],[40.7538,-73.9415,15],[40.757,-73.953],[40.7595,-73.9597,16],[40.7713,-73.9521,17],[40.7757,-73.9488,17.4],[40.7832,-73.9438,18],[40.7957,-73.9354,19],[40.8015,-73.9314],[40.8045,-73.929],[40.808,-73.9265,20],[40.8085,-73.928],[40.8128,-73.925],[40.8143,-73.9278],[40.8105,-73.9262],[40.8118,-73.933,21],[40.8137,-73.9358],[40.8143,-73.9375],[40.8056,-73.9433],[40.8031,-73.945],[40.7968,-73.9492],[40.7856,-73.9568,23.8],[40.7843,-73.9576,24],[40.7815,-73.961],[40.777,-73.965],[40.7735,-73.968],[40.7646,-73.973,25],[40.766,-73.9765],[40.7673,-73.9795],[40.7681,-73.9819,26],[40.7705,-73.98],[40.7727,-73.9772,26.2]];
 const HOTEL=[40.7759,-73.9497];
+const WARWICK=[40.7626,-73.9788];
+/* where Google Maps should take us: the right side of the street, or the entrance */
+const DEST={fourth:[40.6416,-74.0182],lafayette:[40.6874,-73.9659],bedford:[40.7146,-73.9596],greenpoint:[40.7244,-73.9509],first:[40.7759,-73.9491],fifth:[40.7855,-73.9563],finish:[40.7713,-73.9826],hotel:HOTEL,warwick:WARWICK,dtbk:[40.6923,-73.9873]};
+const PIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+function gmaps(to,from,route,label){
+  const d=Array.isArray(to)?to.join(","):to,mode=/\[[0-9A-Z]\]/.test(route||"")?"transit":"walking";
+  let u=`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(d)}&travelmode=${mode}`;
+  if(from)u+=`&origin=${encodeURIComponent(from.join(","))}`;
+  return `<a class="gbtn" href="${u}" target="_blank" rel="noopener">${PIN}${label||"Open in Google Maps"}</a>`;
+}
 
 const WAVES={1:550,2:585,3:620,4:655,5:690};
 const RACE_DAY="2026-11-01";
 const DEFAULTS={wave:"2",offset:"7",goal:"5:15",fade:"0.03",liveMile:"",liveTime:"",finishSide:"unknown",seats:"",
   meet:"NE corner of W 70th St & Columbus Ave, inside the Family Reunion area",
   backup:"Verdi Square (Broadway & W 72nd St), 45 minutes after her official finish time",
-  hoLaf:"",hoFirst:"",hoHand:"",status:"",note:"",spots:["fourth","lafayette","first","finish"],maybe:["fourth"],decided:{},tab:"live"};
+  hoLaf:"",hoFirst:"",hoHand:"",status:"",note:"",meetup:"warwick",meet3:"The Warwick New York lobby, 65 W 54th St at Sixth Ave, about 15 minutes' walk from the finish",spots:["fourth","lafayette","first","finish"],maybe:["fourth"],decided:{},tab:"live"};
 let state=JSON.parse(JSON.stringify(DEFAULTS));
-const FIELDS=["wave","offset","goal","fade","liveMile","liveTime","finishSide","seats","meet","backup","hoLaf","hoFirst","hoHand","status","note"];
-const SHARED={liveMile:"last_split",liveTime:"last_split_time",finishSide:"grandstand_side",seats:"grandstand_seats",hoLaf:"handoff_lafayette",hoFirst:"handoff_first",hoHand:"handoff_hand",meet:"meet_spot",backup:"backup_spot",status:"status",note:"note"};
+const FIELDS=["meetup","wave","offset","goal","fade","liveMile","liveTime","finishSide","seats","meet","backup","meet3","hoLaf","hoFirst","hoHand","status","note"];
+const SHARED={liveMile:"last_split",liveTime:"last_split_time",finishSide:"grandstand_side",seats:"grandstand_seats",hoLaf:"handoff_lafayette",hoFirst:"handoff_first",hoHand:"handoff_hand",meet:"meet_spot",backup:"backup_spot",meet3:"meet_third",status:"status",note:"note"};
 
 const DECISIONS=[
  ["fourth","Go to Fourth Ave or not?","Tentative. Decide by about 8:45 am: going means leaving the hotel around 9:10; skipping means leaving around 10:10 for Lafayette."],
@@ -368,10 +399,12 @@ const DECISIONS=[
  ["handoff","What she wants at the handoffs","Fill in under Handoffs once she tells you, plus which hand."],
  ["reunion","Confirm the reunion corner with Chacha","She should know the corner and the backup before the race."],
  ["brooklyn","Third Brooklyn sighting","Decided: no. First Ave is next to the hotel and has a direct Q to the finish with about an hour to spare.",true],
+ ["parentTix","Grandstand tickets for her parents","They're with us all day, so check they have grandstand tickets too. If not, they could watch from the free standing area inside the park near Columbus Circle and meet us at the reunion."],
+ ["parents","Her parents: with us all day?","Decided: yes, at every stop.",true],
  ["look","What we'll wear","Decided: red windbreaker and a Puerto Rico flag.",true]
 ];
 const CHECK=[
- {g:"Tonight",items:["Add her in the official TCS NYC Marathon app","Tell Chacha our spots, which side, and the reunion corner","Photograph her race outfit, front and back","Screenshot the grandstand tickets; check the gate and bag rules","Charge phones and battery packs","Check the MTA app for service changes","Set alarms with the clock change in mind"]},
+ {g:"Tonight",items:["Add her in the official TCS NYC Marathon app","Confirm the meet-up time at the Warwick with her parents","Check her parents have grandstand tickets","Tell Chacha our spots, which side, and the reunion corner","Photograph her race outfit, front and back","Screenshot the grandstand tickets; check the gate and bag rules","Charge phones and battery packs","Check the MTA app for service changes","Set alarms with the clock change in mind"]},
  {g:"Carry",items:["Red windbreaker","Puerto Rico flag (one you can wave without a pole)","Phone, battery pack and cable","Contactless card or phone wallet for OMNY","Photo ID","Grandstand tickets, saved offline","Card and some cash","Layers for a cool morning","Sunglasses and sunscreen","Comfortable walking shoes","Water and snacks","Tissues and hand sanitizer","Small bag only, for screening"]},
  {g:"For Chacha",items:["Lafayette backup kit: sunscreen, lip balm, anti-chafe","First Ave handoff item","Dry top and a warm layer for after","Sandals or slides","Salty snack and a recovery drink","Her phone charger"]}
 ];
@@ -416,10 +449,17 @@ function sideText(s){
 }
 
 /* itinerary: one group, Rafi joins at the first stop */
+const startKey=()=>state.meetup==="warwick"?"warwick":"hotel";
+const startName=()=>state.meetup==="warwick"?"the Warwick":"the hotel";
+function meetInfo(list){
+  if(state.meetup!=="warwick"||!list.length)return null;
+  const leaveMeet=list[0].leave,meetBy=leaveMeet-10,leg=LEGS["hotel>warwick"];
+  return {leaveMeet,meetBy,leaveHotel:meetBy-leg[0],trip:leg[0],route:leg[1]};
+}
 function plan(M){
   const list=chosen().map(s=>({...s,eta:M.eta(s.mile)}));
   list.forEach((s,i)=>{
-    const from=i?list[i-1].id:"hotel",leg=LEGS[from+">"+s.id]||[60,"Check the MTA app for the best route."];
+    const from=i?list[i-1].id:startKey(),leg=LEGS[from+">"+s.id]||[60,"Check the MTA app for the best route."];
     s.trip=leg[0];s.route=leg[1];
     if(i){s.window=s.eta-list[i-1].eta;s.buffer=Math.round(s.window-leg[0]);s.leave=list[i-1].eta;}
     else s.leave=s.eta-30-leg[0];
@@ -431,21 +471,26 @@ const grade=b=>b>=15?["ok","Comfortable"]:b>=5?["warn","Tight"]:["bad","Not real
 function rafiNote(list){
   if(!list.length)return "";
   const first=list[0],r=LEGS["dtbk>"+first.id];if(!r)return "";
-  let t=`<div class="rafi"><strong>Rafi meets us here.</strong> He leaves Downtown Brooklyn by ${clock(first.eta-30-r[0])}. ${bullets(r[1])}`;
+  let t=`<div class="rafi"><strong>Rafi meets us here.</strong> He leaves Downtown Brooklyn by ${clock(first.eta-30-r[0])}. ${bullets(r[1])}<br>${gmaps(DEST[first.id],DEST.dtbk,r[1],"Rafi's route in Google Maps")}`;
   if(isMaybe(first.id)&&list[1]){const r2=LEGS["dtbk>"+list[1].id];if(r2)t+=` If we skip ${first.short}, he meets us at ${list[1].short} instead, leaving by ${clock(list[1].eta-30-r2[0])}.`;}
   return t+" He doesn't have a grandstand ticket, so he heads off after our last stop before the finish.</div>";
 }
 
 function renderPlan(){
   const M=model(),list=plan(M);
-  document.getElementById("paceNote").textContent=`She crosses the start about ${clock(M.cross)}. First half ${pace(M.p1)} per mile, second half ${pace(M.p2)}. `+(M.live?"Times use her latest split.":`Projected finish ${clock(M.eta(26.2))}.`);
+  document.getElementById("paceNote").textContent=`She crosses the start about ${clock(M.cross)}. First half ${pace(M.p1)} per mile, second half ${pace(M.p2)}. `+(M.live?`Updated from her ${state.liveMile}-mile split: her pace so far is ${pace((hm(state.liveTime)-M.cross)/parseFloat(state.liveMile))} per mile, projected finish ${clock(M.eta(26.2))}.`:`Projected finish ${clock(M.eta(26.2))}.`);
+  const mt=meetInfo(list);
   let html=`<div class="stop"><div class="star">${STAR}<span>Go!</span></div><div class="panel"><h3>We start at the hotel</h3><p class="note" style="margin:4px 0 0">85th St & First Ave.</p></div></div>`;
+  if(mt){
+    html+=`<div class="leg"><span class="status ok">Leave the hotel by ${clock(mt.leaveHotel)}</span><div>Trip about ${mt.trip} min.</div><p class="route">${bullets(mt.route)}</p>${gmaps(DEST.warwick,DEST.hotel,mt.route)}</div>`;
+    html+=`<div class="stop"><div class="star">${STAR}<span>Meet</span></div><div class="panel"><h3>Meet at the Warwick</h3><div class="note">65 W 54th St at Sixth Ave, lobby</div><div class="eta">${clock(mt.meetBy)}</div><div class="note">Everyone in the lobby by then, including her parents. We head out at ${clock(mt.leaveMeet)}.</div><ul class="tips"><li>Use the restrooms and grab coffee before leaving; they're scarce on the course.</li><li>Nothing to cross between here and 57 St–7 Av; the course doesn't come through Midtown.</li></ul></div></div>`;
+  }
   list.forEach((s,i)=>{
-    if(!i){html+=`<div class="leg"><span class="status ok">Leave by ${clock(s.leave)}</span><div>Trip about ${s.trip} min, arriving 30 min early to claim a curb spot.</div><p class="route">${bullets(s.route)}</p></div>`;}
+    if(!i){html+=`<div class="leg"><span class="status ok">Leave ${startName()} by ${clock(s.leave)}</span><div>Trip about ${s.trip} min, arriving 30 min early to claim a curb spot.</div><p class="route">${bullets(s.route)}</p>${gmaps(DEST[s.id],DEST[startKey()],s.route)}</div>`;}
     else{
       const [c,w]=grade(s.buffer);let body=`She needs about ${Math.round(s.window)} min to get here; the trip is about ${s.trip} min. Leave as soon as she passes.`;
-      if(isMaybe(list[i-1].id)&&i===1){const l2=LEGS["hotel>"+s.id];if(l2)body+=` If we skip ${list[0].short}, leave the hotel by ${clock(s.eta-30-l2[0])}.`;}
-      html+=`<div class="leg"><span class="status ${c}">${w}: ${s.buffer>=0?s.buffer+" min to spare":Math.abs(s.buffer)+" min short"}</span><div>${body}</div><p class="route">${bullets(s.route)}</p></div>`;
+      if(isMaybe(list[i-1].id)&&i===1){const l2=LEGS[startKey()+">"+s.id];if(l2){const lv=s.eta-30-l2[0];body+=` If we skip ${list[0].short}, leave ${startName()} by ${clock(lv)}`+(mt?` (leave the hotel by ${clock(lv-10-LEGS["hotel>warwick"][0])}).`:".");}}
+      html+=`<div class="leg"><span class="status ${c}">${w}: ${s.buffer>=0?s.buffer+" min to spare":Math.abs(s.buffer)+" min short"}</span><div>${body}</div><p class="route">${bullets(s.route)}</p>${gmaps(DEST[s.id],DEST[list[i-1].id],s.route)}</div>`;
     }
     html+=`<div class="stop${isMaybe(s.id)?" tent":""}"><div class="star">${STAR}<span>${s.mile}</span></div><div class="panel"><h3>${s.name}${isMaybe(s.id)?'<span class="maybe">Tentative</span>':""}</h3><div class="note">${s.area}, mile ${s.mile}</div><div class="eta">${clock(s.eta)}</div><div class="note">Expected pass time, give or take 5 minutes.</div><div class="side">${esc(sideText(s))}</div><ul class="tips">${s.tips.map(t=>`<li>${bullets(t)}</li>`).join("")}</ul>${i===0?rafiNote(list):""}</div></div>`;
   });
@@ -458,18 +503,22 @@ function renderNext(){
   if(!list.length){box.innerHTML=`<p>Pick our spots on the Info tab.</p>`;return;}
   const first=list[0],finish=M.eta(26.2);
   const pills=t=>`<div class="est"><span class="pill">${t}</span><span class="pill">Finish about ${clock(finish)}</span></div>`;
+  const mt=meetInfo(list);
   if(now.date<RACE_DAY){
+    if(mt){box.innerHTML=`<div class="kicker">Race day is ${now.date===RACE_DAY_MINUS1()?"tomorrow":"Sunday, Nov 1"}</div><div class="big">Leave by ${clock(mt.leaveHotel)}</div><div class="where">to meet at the Warwick by ${clock(mt.meetBy)}</div><p class="note" style="margin-top:8px">Then we leave the Warwick at ${clock(mt.leaveMeet)} for ${esc(first.name)}${isMaybe(first.id)?" (tentative)":""}.</p>${pills(`She starts about ${clock(M.cross)}`)}`;return;}
     box.innerHTML=`<div class="kicker">Race day is ${now.date===RACE_DAY_MINUS1()?"tomorrow":"Sunday, Nov 1"}</div><div class="big">Leave by ${clock(first.leave)}</div><div class="where">for ${esc(first.name)}${isMaybe(first.id)?' <span class="maybe">Tentative</span>':""}</div><div class="side">${esc(sideText(first))}</div>${pills(`She starts about ${clock(M.cross)}`)}`;return;
   }
   if(now.date>RACE_DAY){box.innerHTML=`<div class="kicker">That's a wrap</div><div class="big">She did it! ★</div>`;return;}
   const t=now.min,mile=M.mileAt(t);
   const where=t<M.cross?`She starts about ${clock(M.cross)}`:t>=finish?"She should be finished":`She's around mile ${mile.toFixed(1)} (estimate)`;
-  if(t<first.leave){box.innerHTML=`<div class="kicker">First, head out</div><div class="big">Leave ${inMin(first.leave-t)}</div><div class="where">by ${clock(first.leave)} for ${esc(first.name)}</div><p class="route">${bullets(first.route)}</p>${pills(where)}`;return;}
+  if(mt&&t<mt.leaveHotel){box.innerHTML=`<div class="kicker">First, head to the Warwick</div><div class="big">Leave ${inMin(mt.leaveHotel-t)}</div><div class="where">by ${clock(mt.leaveHotel)}, to be in the lobby by ${clock(mt.meetBy)}</div><p class="route">${bullets(mt.route)}</p>${gmaps("Warwick New York, 65 W 54th St, New York, NY 10019",null,mt.route,"Directions to the Warwick")}${pills(where)}`;return;}
+  if(mt&&t<first.leave){box.innerHTML=`<div class="kicker">At the Warwick</div><div class="big">Leave ${inMin(first.leave-t)}</div><div class="where">by ${clock(first.leave)} for ${esc(first.name)}</div><p class="route">${bullets(first.route)}</p>${gmaps(DEST[first.id],null,first.route)}${pills(where)}`;return;}
+  if(t<first.leave){box.innerHTML=`<div class="kicker">First, head out</div><div class="big">Leave ${inMin(first.leave-t)}</div><div class="where">by ${clock(first.leave)} for ${esc(first.name)}</div><p class="route">${bullets(first.route)}</p>${gmaps(DEST[first.id],null,first.route)}${pills(where)}`;return;}
   const i=list.findIndex(s=>s.eta+3>t);
-  if(i===-1){box.innerHTML=`<div class="kicker">Reunion time</div><div class="big">Meet her!</div><div class="where">${esc(state.meet)}</div><p class="note" style="margin-top:8px">Backup: ${esc(state.backup)}</p>${pills(where)}`;return;}
+  if(i===-1){box.innerHTML=`<div class="kicker">Reunion time</div><div class="big">Meet her!</div><div class="where">${esc(state.meet)}</div>${gmaps(state.meet.split(",")[0].replace(/^(the\s+)?(north|south)?(east|west)?\s*(NE|NW|SE|SW)?\s*corner of\s+/i,"")+", New York, NY",null,"","Walk there in Google Maps")}<p class="note" style="margin-top:8px">Backup: ${esc(state.backup)}</p>${state.meet3.trim()?`<p class="note">Third option: ${esc(state.meet3)}</p>`:""}${pills(where)}`;return;}
   const s=list[i],nxt=list[i+1];
   const enRoute=i>0&&t>=s.leave&&t<s.eta-15;
-  box.innerHTML=`<div class="kicker">${enRoute?"On the way to":"Next stop"}</div><div class="where">${esc(s.name)}${isMaybe(s.id)?' <span class="maybe">Tentative</span>':""}</div><div class="big">${clock(s.eta)}</div><div class="note">She's there ${inMin(s.eta-t)}</div><div class="side">${esc(sideText(s))}</div>${i>0?`<p class="note" style="margin-top:8px">Trip about ${s.trip} min. Leave by ${clock(s.eta-s.trip)} at the latest.</p>`:""}${enRoute?`<p class="route">${bullets(s.route)}</p>`:""}${nxt?`<p class="note" style="margin-top:10px">After she passes: head to ${esc(nxt.short)}, about ${nxt.trip} min.</p>`:""}${pills(where)}`;
+  box.innerHTML=`<div class="kicker">${enRoute?"On the way to":"Next stop"}</div><div class="where">${esc(s.name)}${isMaybe(s.id)?' <span class="maybe">Tentative</span>':""}</div><div class="big">${clock(s.eta)}</div><div class="note">She's there ${inMin(s.eta-t)}</div><div class="side">${esc(sideText(s))}</div>${i>0?`<p class="note" style="margin-top:8px">Trip about ${s.trip} min. Leave by ${clock(s.eta-s.trip)} at the latest.</p>`:""}${enRoute?`<p class="route">${bullets(s.route)}</p>`:""}${i>0?gmaps(DEST[s.id],null,s.route,`Directions to ${esc(s.short)}`):""}${nxt?`<p class="note" style="margin-top:10px">After she passes: head to ${esc(nxt.short)}, about ${nxt.trip} min.</p>`:""}${pills(where)}`;
 }
 const RACE_DAY_MINUS1=()=>"2026-10-31";
 
@@ -507,14 +556,15 @@ function initMap(){
   prepCourse();
   map=L.map("map",{zoomControl:false,attributionControl:true});
   const dark=matchMedia("(prefers-color-scheme: dark)").matches;
-  L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark?"dark_all":"light_all"}/{z}/{x}/{y}{r}.png`,{maxZoom:19,subdomains:"abcd",attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
   L.control.zoom({position:"topright"}).addTo(map);
   const line=COURSE.map(p=>[p[0],p[1]]);
   L.polyline(line,{color:"#fff",weight:10,opacity:.9}).addTo(map);
   L.polyline(line,{color:"#FF4F9A",weight:5}).addTo(map);
   [5,10,15,20,25].forEach(m=>L.marker(posAt(m),{interactive:false,icon:L.divIcon({className:"",html:`<div class="mm">${m}</div>`,iconSize:[24,18],iconAnchor:[12,9]})}).addTo(map));
-  L.marker(COURSE[0].slice(0,2),{icon:L.divIcon({className:"",html:'<div class="mm" style="width:44px">Start</div>',iconSize:[44,18],iconAnchor:[22,9]})}).addTo(map);
+  L.marker(COURSE[0].slice(0,2),{icon:L.divIcon({className:"",html:'<div class="mm" style="width:44px">Start</div>',iconSize:[44,18],iconAnchor:[22,30]})}).addTo(map);
   L.circleMarker(HOTEL,{radius:7,color:"#4A1D3E",weight:2,fillColor:"#fff",fillOpacity:1}).bindPopup("<strong>Our hotel</strong><br>85th St & First Ave").addTo(map);
+  L.circleMarker(WARWICK,{radius:7,color:"#FF8B3D",weight:3,fillColor:"#fff",fillOpacity:1}).bindPopup("<strong>The Warwick</strong><br>65 W 54th St at Sixth Ave<br>Morning meet-up and third reunion option").addTo(map);
   spotLayer=L.layerGroup().addTo(map);
   herMarker=L.marker(posAt(0),{zIndexOffset:1000,icon:L.divIcon({className:"",html:'<div class="runner"></div>',iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map);
   map.fitBounds(L.polyline(line).getBounds(),{padding:[20,20]});
@@ -565,7 +615,7 @@ async function sync(){
     if(sp){const v=SPLITS[sp]||String(parseFloat(sp));const sel=document.getElementById("liveMile");
       if(v!=="NaN"){if(![...sel.options].some(o=>o.value===v))sel.add(new Option(`${v} mi`,v));state.liveMile=v;}}
     if("last_split_time" in kv)state.liveTime=kv.last_split_time?to24(kv.last_split_time):"";
-    ["grandstand_seats:seats","meet_spot:meet","backup_spot:backup","handoff_lafayette:hoLaf","handoff_first:hoFirst","status:status","note:note"].forEach(x=>{const [k,f]=x.split(":");if(k in kv&&(kv[k]||!["meet","backup"].includes(f)))state[f]=kv[k];});
+    ["grandstand_seats:seats","meet_spot:meet","backup_spot:backup","meet_third:meet3","handoff_lafayette:hoLaf","handoff_first:hoFirst","status:status","note:note"].forEach(x=>{const [k,f]=x.split(":");if(k in kv&&(kv[k]||!["meet","backup","meet3"].includes(f)))state[f]=kv[k];});
     if(/^(left|right)$/i.test(kv.grandstand_side||""))state.finishSide=kv.grandstand_side.toLowerCase();
     if(/^(left|right)$/i.test(kv.handoff_hand||""))state.hoHand=kv.handoff_hand.toLowerCase();
     const fa=(kv.fourth_ave||"").toLowerCase();
