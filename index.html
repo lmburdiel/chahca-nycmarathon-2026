@@ -1,0 +1,538 @@
+<!-- Chacha's First Marathon! NYC26.2 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chacha's First Marathon! NYC26.2</title>
+<style>
+:root{
+  --bg:#FFF1F7; --surface:#FFFFFF; --ink:#4A1D3E; --muted:#8B5A7C; --line:#FBCFE2;
+  --pink:#FF4F9A; --pinkText:#D6246F; --blush:#FFE2EF; --orange:#FF8B3D; --orangeText:#BD560F; --peach:#FFE6D3;
+  --ok:#1F7A4A; --okbg:#E2F5EA; --warn:#A35A00; --warnbg:#FFF0D9; --bad:#B42A4A; --badbg:#FFE0E6;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#26111F; --surface:#36182C; --ink:#FFEAF4; --muted:#D7A9C4; --line:#5A2A48;
+    --pink:#FF77B3; --pinkText:#FF8CC0; --blush:#47203A; --orange:#FFA266; --orangeText:#FFB27F; --peach:#4A2A22;
+    --ok:#7FD9A6; --okbg:#1C3A2A; --warn:#FFC46B; --warnbg:#45321A; --bad:#FF8FA6; --badbg:#4A1E2B;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-rounded,"SF Pro Rounded","Nunito","Quicksand","Varela Round",system-ui,sans-serif;font-size:16px;line-height:1.5}
+main{max-width:720px;margin:0 auto;padding:0 16px 90px}
+h2{font-size:1.35rem;margin:40px 0 10px;display:flex;align-items:center;gap:8px}
+h2 svg{flex:none}
+p{margin:0 0 10px}
+.note{font-size:.88rem;color:var(--muted)}
+/* hero */
+header{position:relative;overflow:hidden;margin:0 -16px;padding:40px 22px 34px;background:linear-gradient(160deg,var(--blush),var(--peach));border-bottom:3px dotted var(--pink)}
+header h1{position:relative;margin:0;font-size:clamp(2.2rem,8vw,3.4rem);line-height:1;font-weight:800;letter-spacing:-.02em;color:var(--ink);max-width:12ch}
+.badge{position:relative;display:inline-block;margin-top:14px;transform:rotate(-4deg);background:var(--orange);color:#fff;font-weight:800;font-size:1.5rem;padding:6px 18px;border-radius:999px;box-shadow:0 4px 0 var(--pink)}
+header p{position:relative;z-index:1;margin-top:18px;max-width:min(46ch,82%)}
+header h1,.badge{z-index:1}
+.sky{position:absolute;inset:0;pointer-events:none}
+.sky svg{position:absolute}
+@media (prefers-reduced-motion:no-preference){.tw{animation:tw 2.6s ease-in-out infinite}.tw2{animation:tw 3.4s ease-in-out .8s infinite}@keyframes tw{50%{transform:scale(.7) rotate(20deg);opacity:.6}}}
+.alert{background:var(--surface);border:2px solid var(--orange);border-radius:18px;padding:12px 16px;margin:20px 0 0}
+.panel{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:540px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:9px 11px}
+textarea{min-height:170px;resize:vertical}
+input[type=checkbox]{width:20px;height:20px;padding:0;accent-color:var(--pink);flex:none;margin:3px 0 0}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+button{font:inherit;cursor:pointer}
+.btn{font-weight:800;background:var(--pink);color:#fff;border:0;border-radius:999px;padding:10px 18px}
+.btn.alt{background:none;color:var(--ink);border:2px solid var(--line)}
+/* crew picker */
+.crew{width:100%;border-collapse:separate;border-spacing:0 6px}
+.crew th{font-size:.82rem;color:var(--muted);font-weight:700;text-align:center;padding:0 6px}
+.crew th:first-child{text-align:left}
+.crew td{background:var(--surface);padding:8px 10px}
+.crew td:first-child{border-radius:14px 0 0 14px}
+.crew td:last-child{border-radius:0 14px 14px 0}
+.crew td.c{text-align:center;width:52px;padding:8px 4px}
+.crew td.c input{margin:0 auto}
+.mi{display:inline-block;min-width:3.2em;font-weight:800;color:var(--pinkText)}
+/* course */
+.course{position:relative;margin-top:16px;padding-left:66px}
+.course::before{content:"";position:absolute;left:28px;top:10px;bottom:10px;width:8px;border-radius:4px;background:linear-gradient(var(--pink),var(--orange))}
+.stop{position:relative;margin-bottom:14px}
+.star{position:absolute;left:-66px;top:-4px;width:64px;height:64px}
+.star svg{width:64px;height:64px}
+.star span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;color:#fff;padding-top:4px}
+.stop .panel{border-color:var(--pink)}
+.stop h3{margin:0;font-size:1.1rem}
+.eta{font-size:2rem;font-weight:800;letter-spacing:-.02em;color:var(--pinkText);font-variant-numeric:tabular-nums;margin:4px 0 0}
+.side{display:inline-block;margin-top:8px;background:var(--peach);color:var(--ink);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.92rem}
+.who{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:.8rem;font-weight:800;border-radius:999px;padding:2px 10px;color:#fff}
+.tag.me{background:var(--pink)} .tag.fr{background:var(--orange)}
+.leg{margin:0 0 12px;padding:10px 14px;border-radius:16px;border:2px dashed var(--line);font-size:.93rem}
+.leg .status{display:inline-block;font-weight:800;font-size:.82rem;padding:2px 10px;border-radius:999px;margin:0 4px 6px 0}
+.ok{background:var(--okbg);color:var(--ok)} .warn{background:var(--warnbg);color:var(--warn)} .bad{background:var(--badbg);color:var(--bad)}
+.route{margin:6px 0 0}
+.b{display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;font-weight:800;font-size:.8em;color:#fff;vertical-align:.08em;margin:0 1px;font-family:Helvetica,Arial,sans-serif}
+.b.y{color:#000}
+ul.tips{margin:8px 0 0;padding-left:0;list-style:none}
+ul.tips li{position:relative;padding-left:22px;margin-bottom:4px}
+ul.tips li::before{content:"★";position:absolute;left:2px;top:0;color:var(--orange)}
+/* checklist + decisions */
+.list{list-style:none;padding:0;margin:0}
+.list li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:2px dotted var(--line)}
+.list li:last-child{border-bottom:0}
+.list li.done .txt{color:var(--muted);text-decoration:line-through}
+.list label{color:inherit;font-size:1rem;margin:0}
+.del{margin-left:auto;background:none;border:0;color:var(--muted);padding:0 4px}
+.group{margin-bottom:14px}
+.group h3{font-size:1rem;margin:0 0 4px;display:flex;justify-content:space-between}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.row input{flex:1;min-width:180px}
+.why{display:block;font-size:.88rem;color:var(--muted);margin-top:2px}
+dl.facts dt{font-weight:800;margin-top:12px}
+dl.facts dd{margin:2px 0 0}
+
+
+.maybe{display:inline-block;font-size:.8rem;font-weight:800;border-radius:999px;padding:2px 10px;background:var(--peach);color:var(--orangeText);border:2px dashed var(--orange);margin-left:6px;vertical-align:.15em}
+.stop.tent .panel{border-style:dashed}
+.live{border-color:var(--orange)}
+.live dl{margin:8px 0 0}
+.live dt{font-weight:800;font-size:.88rem;color:var(--muted);margin-top:8px}
+.live dd{margin:0}
+.hand{display:grid;grid-template-columns:1fr;gap:10px}
+.hand .h{border:2px dotted var(--line);border-radius:16px;padding:10px 12px}
+.hand strong{display:block}
+</style>
+
+<main>
+<header>
+  <div class="sky" aria-hidden="true">
+    <svg class="tw" style="right:5%;top:10%" width="44" height="44" viewBox="0 0 24 24"><path fill="#FF4F9A" d="M12 1.5l3.1 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.6 20.9l1.5-7.1L1.7 8.9l7.2-.8z"/></svg>
+    <svg class="tw2" style="right:22%;top:30%" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF8B3D" d="M12 1.5l3.1 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.6 20.9l1.5-7.1L1.7 8.9l7.2-.8z"/></svg>
+    <svg style="right:4%;bottom:5%" width="28" height="28" viewBox="0 0 24 24"><path fill="#FFFFFF" stroke="#FF4F9A" stroke-width="1.5" d="M12 1.5l3.1 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.6 20.9l1.5-7.1L1.7 8.9l7.2-.8z"/></svg>
+    <svg class="tw" style="right:20%;top:6%" width="16" height="16" viewBox="0 0 24 24"><path fill="#FF4F9A" d="M12 1.5l3.1 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.6 20.9l1.5-7.1L1.7 8.9l7.2-.8z"/></svg>
+  </div>
+  <h1>Chacha's First Marathon!</h1>
+  <div class="badge">NYC26.2</div>
+  <p>Sunday, November 1. Orange start, wave 2, corral D. Every time below updates when someone enters her latest split.</p>
+</header>
+
+<div class="alert"><strong>Clocks fall back tonight.</strong> Daylight saving time ends at 2 am. Your phones adjust on their own; check any alarm or watch set by hand.</div>
+
+<h2>Live board</h2>
+<div class="panel live">
+  <p class="note" id="syncNote">Not connected to a shared sheet. Times use what's entered on this device.</p>
+  <dl id="board"></dl>
+  <div id="editBox" hidden>
+    <div class="grid" style="margin-top:6px">
+      <div><label for="statusYou">Where you are now</label><input id="statusYou" placeholder="e.g. On the Q to Brooklyn"></div>
+      <div><label for="statusRafi">Where Rafi is now</label><input id="statusRafi" placeholder="e.g. At Lafayette, south side"></div>
+    </div>
+    <label for="note" style="margin-top:10px">Note for everyone</label><input id="note" placeholder="e.g. Skipping Fourth Ave, meet at Lafayette">
+    <p class="note" id="writeNote" role="status" style="margin-top:8px">Changes to shared info save to the sheet automatically.</p>
+  </div>
+  <div class="row"><button class="btn" id="syncNow">Sync now</button></div>
+</div>
+
+<h2>Race-day update</h2>
+<div class="panel">
+  <p class="note">Each time the tracker shows a new split, enter it here (or in the shared sheet). Every later time recalculates from her real pace.</p>
+  <div class="grid">
+    <div><label for="liveMile">Last split she crossed</label>
+      <select id="liveMile"><option value="">No update yet</option><option value="3.1">5K (3.1 mi)</option><option value="6.2">10K (6.2 mi)</option><option value="9.3">15K (9.3 mi)</option><option value="12.4">20K (12.4 mi)</option><option value="13.1">Half (13.1 mi)</option><option value="15.5">25K (15.5 mi)</option><option value="18.6">30K (18.6 mi)</option><option value="21.7">35K (21.7 mi)</option><option value="24.9">40K (24.9 mi)</option></select></div>
+    <div><label for="liveTime">Clock time at that split</label><input id="liveTime" type="time"></div>
+  </div>
+</div>
+
+<h2>Her race</h2>
+<div class="panel">
+  <div class="grid">
+    <div><label for="wave">Start wave</label>
+      <select id="wave"><option value="1">Wave 1, 9:10 am</option><option value="2">Wave 2, 9:45 am</option><option value="3">Wave 3, 10:20 am</option><option value="4">Wave 4, 10:55 am</option><option value="5">Wave 5, 11:30 am</option></select></div>
+    <div><label for="offset">Minutes from gun to her crossing the start</label><input id="offset" type="number" min="0" max="30"></div>
+    <div><label for="goal">Goal finish time (h:mm)</label><input id="goal" inputmode="numeric"></div>
+    <div><label for="fade">Second-half slowdown</label>
+      <select id="fade"><option value="0">Even pace</option><option value="0.03">A little (3%)</option><option value="0.06">Typical first-timer (6%)</option><option value="0.1">A lot (10%)</option></select></div>
+  </div>
+  <p class="note" id="paceNote" style="margin:10px 0 0"></p>
+</div>
+
+<h2>Who goes where</h2>
+<div class="panel">
+  <table class="crew"><thead><tr><th>Spot (in course order)</th><th>You</th><th>Rafi</th><th>Maybe</th></tr></thead><tbody id="crewBody"></tbody></table>
+  <p class="note">You start at the hotel on 85th & First. Rafi starts in Downtown Brooklyn and is free all day: he meets you at Fourth Ave if you go, otherwise at Lafayette. He doesn't have a grandstand ticket, so Fifth Ave is his last sighting; after that he can head home or meet you at the reunion.</p>
+  <div class="grid" style="margin-top:10px">
+    <div><label for="finishSide">Grandstand seats are on her</label>
+      <select id="finishSide"><option value="unknown">To be decided</option><option value="left">Left (west side of West Drive)</option><option value="right">Right (east side of West Drive)</option></select></div>
+    <div><label for="seats">Seat details (section, row)</label><input id="seats" placeholder="Fill in from your ticket"></div>
+  </div>
+</div>
+
+<h2>The day, mile by mile</h2>
+<div class="course" id="course"></div>
+
+<h2>Handoffs</h2>
+<div class="panel">
+  <p class="note">First Ave is the main handoff. The other two are backups if she needs something earlier or later. Hold the item out at arm's length on her side of the street, gel already opened, and let her come to you.</p>
+  <div class="hand">
+    <div class="h"><strong>Mile 8.7, Lafayette Ave (you and Rafi)</strong><span class="note">For anything she forgot or needs early: sunscreen, lip balm, anti-chafe, tissues. You can also take a throwaway layer or gloves she wants to keep.</span><input id="hoLaf" placeholder="What she wants here, if anything" style="margin-top:6px"></div>
+    <div class="h"><strong>Mile 17.4, First Ave (you and Rafi)</strong><span class="note">The main one. She's about three and a half hours in, right where fuel and a boost matter most.</span><input id="hoFirst" placeholder="e.g. one gel and a small water" style="margin-top:6px"></div>
+    <div class="h"><strong>Mile 23.8, Fifth Ave (Rafi only)</strong><span class="note">The last-chance fuel stop on the uphill before the park. Give Rafi this item at First Ave.</span><input id="hoFifth" placeholder="What Rafi should have for her" style="margin-top:6px"></div>
+  </div>
+  <div class="grid" style="margin-top:10px">
+    <div><label for="hoHand">Hand it to her</label><select id="hoHand"><option value="">Either hand</option><option value="left">In her left hand</option><option value="right">In her right hand</option></select></div>
+  </div>
+</div>
+
+<h2>Message for Chacha</h2>
+<div class="panel">
+  <div class="grid">
+    <div><label for="wear">You'll be wearing or holding</label><input id="wear"></div>
+    <div><label for="rafiWear">Rafi will be wearing</label><input id="rafiWear" placeholder="Ask Rafi"></div>
+  </div>
+  <label for="msg" style="margin-top:12px">Send her this tonight</label>
+  <textarea id="msg" readonly></textarea>
+  <div class="row"><button class="btn" id="copy">Copy message</button><span class="note" id="copied" role="status"></span></div>
+</div>
+
+<h2>After the finish</h2>
+<div class="panel">
+  <p>Finishers walk north and exit onto Central Park West, usually 20 to 30 minutes after finishing. The Family Reunion area is West 69th to 71st Streets between Columbus Avenue and Central Park West, 11 am to 6 pm, with bag screening.</p>
+  <p class="note">Suggested: meet on the Columbus Ave edge of the reunion area, away from the crush where runners pour in from Central Park West. For the backup, pick a landmark one block west of the screening, outside the closed zone.</p>
+  <label for="meet">Our meeting spot</label><input id="meet">
+  <label for="backup" style="margin-top:10px">Backup if phones fail</label><input id="backup">
+</div>
+
+<h2>Still to decide</h2>
+<div class="panel"><ul class="list" id="decisions"></ul></div>
+
+<h2>Checklist</h2>
+<p class="note" id="saveNote">Saved on this device.</p>
+<div id="checklist"></div>
+<div class="row"><input id="newItem" placeholder="Add your own item"><button class="btn" id="addItem">Add item</button><button class="btn alt" id="reset">Uncheck everything</button></div>
+
+<h2>Good to know</h2>
+<dl class="facts panel">
+  <dt>Never plan to cross the course</dt><dd>Crossings are only at marshaled points and can be very slow. Every route here keeps you on one side, or goes under the course through the subway.</dd>
+  <dt>Atlantic Av–Barclays is your underpass</dt><dd>The station has entrances on both sides of Flatbush and Fourth Ave. The D, N and R platforms are on the west side; the 2, 3, 4 and Q are on the east (Atlantic Terminal) side. Walk through the station to switch sides.</dd>
+  <dt>The Q is your train</dt><dd>It runs from 86 St–2 Av straight to Atlantic Av–Barclays and to 57 St–7 Av by the finish. This weekend the A and C are rerouted between Brooklyn and Manhattan and some Brooklyn local stops are skipped.</dd>
+  <dt>Stations near the finish</dt><dd>Some stairways at 59 St–Columbus Circle, 66 St, 72 St and 81 St may be closed or exit-only, so the plan uses 57 St–7 Av.</dd>
+  <dt>The flag</dt><dd>Bring one you can wave without a pole, in case poles aren't allowed through grandstand screening.</dd>
+  <dt>When phones jam</dt><dd>Service gets spotty on First Ave and at the finish. Texts get through when calls and page loads don't, so keep the group chat as your fallback.</dd>
+  <dt>Weather</dt><dd>Sunny with light wind: low 50s at the start, low 60s in the afternoon.</dd>
+</dl>
+</main>
+
+<script>
+/* ===== Fill in these three lines, then save ===== */
+const CONFIG={
+  sheet:"PASTE_SHEET_ID_HERE",       // the long code between /d/ and /edit in the sheet's link
+  writeUrl:"PASTE_WEB_APP_URL_HERE", // the Apps Script link ending in /exec
+  key:"PASTE_SECRET_WORD_HERE"       // the word on line 3 of the Apps Script
+};
+/* ================================================ */
+const LINES={"1":"#EE352E","2":"#EE352E","3":"#EE352E","4":"#00933C","5":"#00933C","6":"#00933C","7":"#B933AD","A":"#0039A6","C":"#0039A6","E":"#0039A6","B":"#FF6319","D":"#FF6319","F":"#FF6319","M":"#FF6319","G":"#6CBE45","J":"#996633","Z":"#996633","L":"#A7A9AC","N":"#FCCC0A","Q":"#FCCC0A","R":"#FCCC0A","W":"#FCCC0A"};
+const bullets=s=>s.replace(/\[([0-9A-Z])\]/g,(m,l)=>`<span class="b${"NQRWL".includes(l)?" y":""}" style="background:${LINES[l]}" aria-label="${l} train">${l}</span>`);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const STAR='<svg viewBox="0 0 24 24"><path fill="url(#g)" stroke="#fff" stroke-width="1.2" d="M12 1.5l3.1 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.6 20.9l1.5-7.1L1.7 8.9l7.2-.8z"/><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4F9A"/><stop offset="1" stop-color="#FF8B3D"/></linearGradient></defs></svg>';
+
+const SPOTS=[
+ {id:"fourth",short:"Fourth Ave",mile:4.2,name:"Fourth Ave & 59th St",area:"Sunset Park, Brooklyn",side:"West side of Fourth Ave",dir:"left",tips:[
+  "Orange runs on the west side of the median until mile 8, so stand on the west side.",
+  "Early miles are less crowded, so a front-row spot is easy.",
+  "The pro women and men pass before the mass waves, a fun warm-up while you wait."]},
+ {id:"lafayette",short:"Lafayette Ave",mile:8.7,name:"Lafayette Ave at S Oxford St",area:"Fort Greene, Brooklyn",side:"South side of Lafayette",dir:"right",tips:[
+  "The best atmosphere in Brooklyn: brownstones, music, stoop parties. All three start colors have merged.",
+  "The south side connects to Atlantic Av–Barclays without crossing the course.",
+  "The NYRR Member Cheer Zone is just west of here, where Flatbush meets Lafayette. Expect it to be packed."]},
+ {id:"bedford",short:"Williamsburg",mile:11.6,name:"Bedford Ave & Metropolitan Ave",area:"Williamsburg, Brooklyn",side:"East side of Bedford",dir:"right",tips:[
+  "Loud, bar-lined stretch. Approach from the east so you never cross.",
+  "Your way out is the [L] at Lorimer St, a few blocks east."]},
+ {id:"greenpoint",short:"Greenpoint",mile:12.6,name:"Manhattan Ave & Nassau Ave",area:"Greenpoint, Brooklyn",side:"East side of Manhattan Ave",dir:"right",tips:[
+  "Last look before the Pulaski Bridge and halfway. Usually less packed than Williamsburg.",
+  "From here you can't reach First Ave in time."]},
+ {id:"first",short:"First Ave & 85th",mile:17.4,name:"First Ave & 85th St",area:"Upper East Side",side:"West side, NW corner of 85th",dir:"left",tips:[
+  "The wall of sound. First Ave is wide, so the exact corner matters.",
+  "Your hotel is on this side; you never cross.",
+  "Main handoff spot. Hand Rafi the Fifth Ave item here before he heads west."]},
+ {id:"fifth",short:"Fifth Ave",mile:23.8,name:"Fifth Ave & 92nd St",area:"Upper East Side",side:"East side of Fifth, the building side",dir:"left",tips:[
+  "The long uphill where she'll most need a face she knows.",
+  "Rafi's last sighting. After this he can head home or meet you at the reunion area."]},
+ {id:"finish",short:"Finish grandstand",mile:26.2,name:"Finish grandstand",area:"Central Park, West Drive & 67th St",side:"",dir:"",tips:[
+  "Enter at West 62nd St & Broadway with your ticket; check it in case it lists another gate.",
+  "Screening lines can be long. Budget 15 minutes or more. No chairs.",
+  "Watch the tracker as she reaches mile 25 so you're ready."]}
+];
+
+const LEGS={
+ "hotel>fourth":[60,"Walk to 86 St–2 Av. [Q] to Atlantic Av–Barclays Ctr, then a Brooklyn-bound [N] (express) or [R] to 59 St. Come up on the west side of Fourth Ave."],
+ "hotel>lafayette":[50,"Walk to 86 St–2 Av. [Q] to Atlantic Av–Barclays Ctr. Exit on the Atlantic Terminal side, walk east on Atlantic Ave to S Oxford St, then north to Lafayette."],
+ "hotel>bedford":[55,"[Q] or [4] [5] to 14 St–Union Sq, [L] to Lorimer St, walk west on Metropolitan Ave."],
+ "hotel>greenpoint":[55,"[6] to 51 St, [E] from Lexington Av/53 St to Court Sq, then [G] to Nassau Av."],
+ "hotel>first":[5,"Walk to First Ave on the west side."],
+ "hotel>fifth":[15,"Walk west on 86th St to Fifth Ave, then north to 92nd."],
+ "hotel>finish":[40,"Walk to 86 St–2 Av. [Q] to 57 St–7 Av, then walk north on the west side of Broadway to W 62nd St."],
+ "dtbk>fourth":[30,"[R] from Jay St–MetroTech or Court St to 59 St. Come up on the west side of Fourth Ave."],
+ "dtbk>lafayette":[25,"[2] [3] from Borough Hall or Nevins St one stop to Atlantic Av–Barclays Ctr, which takes you under the course. Exit on the Atlantic Terminal side, walk east on Atlantic Ave to S Oxford St, then north to Lafayette."],
+ "dtbk>bedford":[35,"[G] from Hoyt–Schermerhorn Sts to Metropolitan Av, walk west on Metropolitan."],
+ "dtbk>greenpoint":[30,"[G] from Hoyt–Schermerhorn Sts to Nassau Av."],
+ "dtbk>first":[45,"[4] [5] from Borough Hall to 86 St, walk east to First Ave."],
+ "dtbk>fifth":[45,"[4] [5] from Borough Hall to 86 St, walk west to Fifth Ave and north to 92nd."],
+ "dtbk>finish":[40,"[R] from Jay St–MetroTech to 57 St–7 Av, walk north on Broadway to W 62nd St."],
+ "fourth>lafayette":[35,"Back into 59 St. [N] (express) or [R] to Atlantic Av–Barclays Ctr. Walk through the station to the Atlantic Terminal side, east on Atlantic Ave to S Oxford St, then north to Lafayette."],
+ "fourth>bedford":[65,"[R] to Jay St–MetroTech, walk to Hoyt–Schermerhorn Sts, [G] to Metropolitan Av, walk west on Metropolitan."],
+ "fourth>greenpoint":[60,"[R] to Jay St–MetroTech, walk to Hoyt–Schermerhorn Sts, [G] to Nassau Av."],
+ "fourth>first":[60,"[N] or [R] to Atlantic Av–Barclays Ctr, transfer to the [Q] to 86 St–2 Av, walk to First Ave."],
+ "fourth>fifth":[70,"[N] or [R] to Atlantic Av–Barclays Ctr, [4] [5] to 86 St, walk west to Fifth Ave."],
+ "fourth>finish":[65,"[N] (express) into Manhattan to 57 St–7 Av, walk to W 62nd St & Broadway."],
+ "lafayette>bedford":[30,"Walk east to Clinton–Washington Avs [G] (under Lafayette). [G] toward Court Sq to Metropolitan Av, walk west on Metropolitan."],
+ "lafayette>greenpoint":[28,"Walk east to Clinton–Washington Avs [G]. [G] toward Court Sq to Nassau Av; exit at Manhattan Ave."],
+ "lafayette>first":[58,"Walk back down S Oxford St and west on Atlantic Ave to Atlantic Av–Barclays Ctr. [Q] to 86 St–2 Av (or [4] [5] to 86 St–Lexington), walk to First Ave."],
+ "lafayette>fifth":[65,"Walk to Atlantic Av–Barclays Ctr, [4] [5] to 86 St, walk west to Fifth Ave."],
+ "lafayette>finish":[65,"Walk to Atlantic Av–Barclays Ctr, [Q] to 57 St–7 Av, walk to W 62nd St & Broadway."],
+ "bedford>greenpoint":[22,"[G] from Metropolitan Av to Nassau Av."],
+ "bedford>first":[55,"Walk east to Lorimer St [L]. [L] to 14 St–Union Sq, [Q] or [4] [5] uptown to 86 St, walk to First Ave."],
+ "bedford>fifth":[65,"[L] to 14 St–Union Sq, [4] [5] to 86 St, walk west to Fifth Ave."],
+ "bedford>finish":[60,"[L] to 14 St–Union Sq, [Q] or [N] to 57 St–7 Av, walk to W 62nd St & Broadway."],
+ "greenpoint>first":[55,"[G] to Court Sq, [E] to Lexington Av/53 St, [6] to 86 St, walk east to First Ave."],
+ "greenpoint>fifth":[65,"[G] to Court Sq, [E] to Lexington Av/53 St, [6] to 96 St, walk west to Fifth Ave."],
+ "greenpoint>finish":[60,"[G] to Court Sq, [E] to 7 Av (53rd St), walk north to W 62nd St & Broadway."],
+ "first>fifth":[20,"Walk west on 86th St to Fifth Ave, then north. Fifth is only on the course above 90th, so you won't cross it."],
+ "first>finish":[45,"Walk to 86 St–2 Av. [Q] to 57 St–7 Av. Walk north on the west side of Broadway to W 62nd St. Includes about 15 minutes for screening."],
+ "fifth>finish":[50,"Walk east to 86 St–Lexington Av. [4] [5] to 59 St, [N] or [R] to 57 St–7 Av, walk to W 62nd St & Broadway."]
+};
+
+const PEOPLE=[["me","You","hotel","the hotel"],["fr","Rafi","dtbk","Downtown Brooklyn"]];
+const WAVES={1:550,2:585,3:620,4:655,5:690};
+const DEFAULTS={wave:"2",offset:"7",goal:"5:15",fade:"0.03",liveMile:"",liveTime:"",finishSide:"unknown",seats:"",
+  wear:"Red windbreaker and a Puerto Rico flag",rafiWear:"",meet:"NE corner of W 70th St & Columbus Ave, inside the Family Reunion area",
+  backup:"Verdi Square (Broadway & W 72nd St), 45 minutes after her official finish time",hoLaf:"",hoFirst:"",hoFifth:"",hoHand:"",sheet:"",statusYou:"",statusRafi:"",note:"",writeUrl:"",editKey:"",
+  crew:{me:["fourth","lafayette","first","finish"],fr:["fourth","lafayette","first","fifth"]},maybe:["fourth"],decided:{}};
+let state=JSON.parse(JSON.stringify(DEFAULTS));
+const FIELDS=["wave","offset","goal","fade","liveMile","liveTime","finishSide","seats","wear","rafiWear","meet","backup","hoLaf","hoFirst","hoFifth","hoHand","statusYou","statusRafi","note"];
+const SHARED={liveMile:"last_split",liveTime:"last_split_time",finishSide:"grandstand_side",seats:"grandstand_seats",hoLaf:"handoff_lafayette",hoFirst:"handoff_first",hoFifth:"handoff_fifth",hoHand:"handoff_hand",rafiWear:"rafi_wear",meet:"meet_spot",backup:"backup_spot",statusYou:"status_you",statusRafi:"status_rafi",note:"note"};
+
+const DECISIONS=[
+ ["fourth","Go to Fourth Ave or not?","Tentative for now. Decide by 8:45 am: going means leaving the hotel around 9:10, skipping means leaving around 10:15 for Lafayette. Rafi follows the same call."],
+ ["side","Grandstand side and seats","To be decided. Set it under Who goes where so her message says left or right."],
+ ["handoff","What she wants at each handoff","Fill in the Handoffs section once she tells you, plus which hand."],
+ ["rafiWear","What Rafi will wear","Add it to the message so she has two things to look for."],
+ ["rafiAfter","Does Rafi head home after Fifth Ave or join the reunion?","Either works. If he joins, he walks to the Columbus Ave side of the reunion area."],
+ ["reunion","Confirm the reunion corner with Chacha","Suggested corner and backup are filled in. Make sure she knows them before the race; she won't have time to read texts after."],
+ ["brooklyn","Third Brooklyn sighting","Decided: no. First Ave wins, because it's next to the hotel and has a direct Q to the finish with about an hour to spare.",true],
+ ["look","What you'll wear","Decided: red windbreaker and a Puerto Rico flag.",true]
+];
+const CHECK=[
+ {g:"Tonight",items:["Add her in the official TCS NYC Marathon app (you and Rafi)","Send her the message on this page","Confirm the reunion corner and backup with her","Photograph her race outfit, front and back","Screenshot the grandstand tickets; check the gate and bag rules","Make the sign","Charge phones and battery packs","Check the MTA app for service changes","Set alarms with the clock change in mind"]},
+ {g:"Carry",items:["Red windbreaker","Puerto Rico flag (one you can wave without a pole)","Phone, battery pack and cable","Contactless card or phone wallet for OMNY (everyone taps their own)","Photo ID","Grandstand tickets, saved offline","Card and some cash","Layers for a cool morning","Sunglasses and sunscreen","Comfortable walking shoes","Water and snacks for you","Tissues and hand sanitizer","Small bag only, for screening"]},
+ {g:"For Chacha, if she wants it",items:["Lafayette backup kit: sunscreen, lip balm, anti-chafe","First Ave handoff item","Fifth Ave item to give Rafi","Dry top and a warm layer for after","Sandals or slides","Salty snack and a recovery drink","Her phone charger"]}
+];
+let checks={done:{},custom:[]};
+
+const hasStore=typeof window!=="undefined"&&window.storage&&typeof window.storage.get==="function";
+async function load(){
+  if(!hasStore){document.getElementById("saveNote").textContent="Saving isn't available here, so checkmarks reset when you reload. Shared info comes from the sheet.";}
+  else{
+    try{const r=await window.storage.get("chacha-plan-v3",false);if(r&&r.value){const v=JSON.parse(r.value);state={...state,...v,crew:{...state.crew,...(v.crew||{})}};}}catch(e){}
+    try{const r=await window.storage.get("chacha-checks",false);if(r&&r.value)checks={done:{},custom:[],...JSON.parse(r.value)};}catch(e){}
+  }
+  const ok=v=>v&&!v.startsWith("PASTE_");
+  if(ok(CONFIG.sheet))state.sheet=CONFIG.sheet;
+  if(ok(CONFIG.writeUrl))state.writeUrl=CONFIG.writeUrl;
+  if(ok(CONFIG.key))state.editKey=CONFIG.key;
+  const q=new URLSearchParams(location.search).get("sheet");if(q)state.sheet=q;
+  const h=new URLSearchParams(location.hash.slice(1));
+  if(h.get("write"))state.writeUrl=h.get("write").startsWith("http")?h.get("write"):`https://script.google.com/macros/s/${h.get("write")}/exec`;
+  if(h.get("key"))state.editKey=h.get("key");
+}
+async function save(key,obj){if(!hasStore)return;try{await window.storage.set(key,JSON.stringify(obj),false);}catch(e){console.error("Storage error",e);}}
+const savePlan=()=>save("chacha-plan-v3",state);
+
+const hm=s=>{const m=String(s).trim().match(/^(\d{1,2}):(\d{2})$/);return m?(+m[1])*60+(+m[2]):null};
+const clock=t=>{t=Math.round(t);let h=Math.floor(t/60)%24,m=t%60,ap=h>=12?"pm":"am";h=h%12||12;return `${h}:${String(m).padStart(2,"0")} ${ap}`};
+const pace=p=>{let mm=Math.floor(p),ss=Math.round((p-mm)*60);if(ss===60){mm++;ss=0;}return `${mm}:${String(ss).padStart(2,"0")}`};
+
+function model(){
+  const total=hm(state.goal)||315,f=+state.fade;
+  const p1=total/(13.1*(2+f)),p2=p1*(1+f);
+  const cross=WAVES[state.wave]+(+state.offset||0);
+  let eta=m=>cross+(m<=13.1?m*p1:13.1*p1+(m-13.1)*p2);
+  const lm=parseFloat(state.liveMile),lt=hm(state.liveTime),live=!!(lm&&lt!==null&&lt>cross);
+  if(live){const cur=(lt-cross)/lm,base=eta;eta=m=>m<=lm?base(m)-base(lm)+lt:lt+(m-lm)*cur*(m>13.1&&lm<13.1?1+f/2:1);}
+  return {p1,p2,cross,eta,live};
+}
+const isMaybe=id=>state.maybe.includes(id);
+function sideText(s){
+  if(s.id==="finish"){const seat=state.seats.trim()?` (${state.seats.trim()})`:"";return state.finishSide==="left"?"Grandstand, on her left"+seat:state.finishSide==="right"?"Grandstand, on her right"+seat:"Grandstand, side to be decided";}
+  return `${s.side}, on her ${s.dir}`;
+}
+const legCard=(tags,status,cls,body,route)=>`<div class="leg">${tags} <span class="status ${cls}">${status}</span><div>${body}</div><p class="route">${bullets(route)}</p></div>`;
+
+function render(){
+  const M=model();
+  document.getElementById("paceNote").textContent=`She crosses the start about ${clock(M.cross)}. First half ${pace(M.p1)} per mile, second half ${pace(M.p2)} per mile. `+(M.live?"Times use her latest split.":`Projected finish ${clock(M.eta(26.2))}.`);
+  const prev={me:null,fr:null};
+  let html=`<div class="stop"><div class="star">${STAR}<span>Go!</span></div><div class="panel"><h3>Starting points</h3><p class="note" style="margin:4px 0 0">You leave from the hotel at 85th & First. Rafi leaves from Downtown Brooklyn and joins you at the first stop.</p></div></div>`;
+  const used=SPOTS.filter(s=>state.crew.me.includes(s.id)||state.crew.fr.includes(s.id));
+  used.forEach(s=>{
+    const eta=M.eta(s.mile),groups={};
+    PEOPLE.forEach(([k,label,home,homeLabel])=>{
+      if(!state.crew[k].includes(s.id))return;
+      const from=prev[k]?prev[k].id:home;
+      (groups[from]=groups[from]||{from,first:!prev[k],prevEta:prev[k]&&prev[k].eta,home:homeLabel,tags:[]}).tags.push(`<span class="tag ${k}">${label}</span>`);
+    });
+    Object.values(groups).forEach(g=>{
+      const leg=LEGS[g.from+">"+s.id]||[60,"Check the MTA app for the best route."];
+      if(g.first){
+        html+=legCard(g.tags.join(" "),`Leave by ${clock(eta-30-leg[0])}`,"ok",`Trip about ${leg[0]} min from ${g.home}, arriving 30 min early to claim a curb spot.`,leg[1]);
+      } else {
+        const win=eta-g.prevEta,buf=Math.round(win-leg[0]);
+        const cls=buf>=15?"ok":buf>=5?"warn":"bad",word=buf>=15?"Comfortable":buf>=5?"Tight":"Not realistic";
+        let body=`She needs about ${Math.round(win)} min to get here; the trip is about ${leg[0]} min. Leave as soon as she passes.`;
+        if(isMaybe(g.from)){
+          const alt=PEOPLE.filter(([k])=>g.tags.some(t=>t.includes(`tag ${k}`))).map(([k,label,home,homeLabel])=>{const l2=LEGS[home+">"+s.id];return l2?`${k==="me"?"you leave":"Rafi leaves"} ${homeLabel} by ${clock(eta-30-l2[0])}`:""}).filter(Boolean).join("; ");
+          body+=` If you skip ${SPOTS.find(x=>x.id===g.from).short}: ${alt}.`;
+        }
+        html+=legCard(g.tags.join(" "),`${word}: ${buf>=0?buf+" min to spare":Math.abs(buf)+" min short"}`,cls,body,leg[1]);
+      }
+    });
+    PEOPLE.forEach(([k])=>{if(state.crew[k].includes(s.id))prev[k]={id:s.id,eta};});
+    const who=PEOPLE.filter(([k])=>state.crew[k].includes(s.id)).map(([k,l])=>`<span class="tag ${k}">${l}</span>`).join("");
+    html+=`<div class="stop${isMaybe(s.id)?" tent":""}"><div class="star">${STAR}<span>${s.mile}</span></div><div class="panel"><h3>${s.name}${isMaybe(s.id)?'<span class="maybe">Tentative</span>':""}</h3><div class="note">${s.area}, mile ${s.mile}</div><div class="eta">${clock(eta)}</div><div class="note">Expected pass time, give or take 5 minutes. Watch the tracker.</div><div class="side">${esc(sideText(s))}</div><div class="who">${who}</div><ul class="tips">${s.tips.map(t=>`<li>${bullets(t)}</li>`).join("")}</ul></div></div>`;
+  });
+  if(!used.length)html+=`<p class="note">Pick at least one spot under Who goes where to build the plan.</p>`;
+  document.getElementById("course").innerHTML=html;
+  renderMsg(M);
+}
+
+function renderMsg(M){
+  const handTxt=state.hoHand?` in your ${state.hoHand} hand`:"";
+  const lines=SPOTS.filter(s=>state.crew.me.includes(s.id)||state.crew.fr.includes(s.id)).map(s=>{
+    const a=state.crew.me.includes(s.id),b=state.crew.fr.includes(s.id),who=a&&b?"Rafi and me":a?"me":"Rafi";
+    const maybe=isMaybe(s.id)?" (maybe! I'll confirm in the morning)":"";
+    const where=s.id==="finish"?(state.finishSide==="unknown"?"me in the grandstand (I'll text you which side)":`me in the grandstand on your ${state.finishSide.toUpperCase()}`):`${who} on your ${s.dir.toUpperCase()} (${s.side})`;
+    return `★ Mile ${s.mile}, ${s.name}, around ${clock(M.eta(s.mile))}${maybe}: ${where}`;
+  });
+  let t=`Chacha!! Here's where to find us tomorrow ♡\n\n${lines.join("\n")}`;
+  if(state.wear.trim())t+=`\n\nLook for me: ${state.wear.trim()}.`;
+  if(state.rafiWear.trim())t+=`\nLook for Rafi: ${state.rafiWear.trim()}.`;
+  const ho=[["Lafayette",state.hoLaf],["First Ave",state.hoFirst],["Fifth Ave (Rafi)",state.hoFifth]].filter(x=>x[1].trim()).map(x=>`${x[0]}: ${x[1].trim()}`);
+  if(ho.length)t+=`\n\nHandoffs${handTxt}:\n${ho.join("\n")}`;
+  if(state.meet.trim())t+=`\n\nAfter the finish: ${state.meet.trim()}.`;
+  if(state.backup.trim())t+=`\nIf we can't reach each other: ${state.backup.trim()}.`;
+  t+=`\n\nYou've got this!`;
+  document.getElementById("msg").value=t;
+}
+
+function renderCrew(){
+  document.getElementById("crewBody").innerHTML=SPOTS.map(s=>`<tr><td><span class="mi">${s.mile}</span>${s.short}</td>${["me","fr"].map(k=>`<td class="c"><input type="checkbox" aria-label="${k==="me"?"You":"Rafi"} at ${s.short}" data-k="${k}" value="${s.id}" ${state.crew[k].includes(s.id)?"checked":""}></td>`).join("")}<td class="c"><input type="checkbox" aria-label="${s.short} is tentative" data-m="${s.id}" ${isMaybe(s.id)?"checked":""}></td></tr>`).join("");
+  document.querySelectorAll("#crewBody input[data-k]").forEach(c=>c.addEventListener("change",()=>{
+    const k=c.dataset.k;state.crew[k]=[...document.querySelectorAll(`#crewBody input[data-k="${k}"]:checked`)].map(x=>x.value);savePlan();render();queueFourth();}));
+  document.querySelectorAll("#crewBody input[data-m]").forEach(c=>c.addEventListener("change",()=>{
+    state.maybe=[...document.querySelectorAll("#crewBody input[data-m]:checked")].map(x=>x.dataset.m);savePlan();render();queueFourth();}));
+}
+
+function renderDecisions(){
+  document.getElementById("decisions").innerHTML=DECISIONS.map(([id,q,why,def])=>{const on=id in state.decided?state.decided[id]:!!def;
+    return `<li class="${on?"done":""}"><input type="checkbox" id="d-${id}" data-d="${id}" ${on?"checked":""}><label for="d-${id}"><span class="txt"><strong>${q}</strong></span><span class="why">${why}</span></label></li>`}).join("");
+  document.querySelectorAll("#decisions input").forEach(c=>c.addEventListener("change",()=>{state.decided[c.dataset.d]=c.checked;savePlan();renderDecisions();}));
+}
+
+function renderChecks(){
+  const groups=CHECK.map(g=>({g:g.g,items:g.items.map((t,i)=>({id:g.g+"|"+i,t}))}));
+  if(checks.custom.length)groups.push({g:"Your items",items:checks.custom.map(c=>({id:c.id,t:c.t,custom:true}))});
+  document.getElementById("checklist").innerHTML=groups.map(g=>{
+    const n=g.items.filter(i=>checks.done[i.id]).length;
+    return `<div class="group panel"><h3><span>${g.g}</span><span class="note">${n} of ${g.items.length}</span></h3><ul class="list">${g.items.map(i=>`<li class="${checks.done[i.id]?"done":""}"><input type="checkbox" id="c-${esc(i.id)}" data-id="${esc(i.id)}" ${checks.done[i.id]?"checked":""}><label for="c-${esc(i.id)}" class="txt">${esc(i.t)}</label>${i.custom?`<button class="del" data-del="${i.id}" aria-label="Remove ${esc(i.t)}">Remove</button>`:""}</li>`).join("")}</ul></div>`;
+  }).join("");
+  document.querySelectorAll("#checklist input").forEach(c=>c.addEventListener("change",()=>{checks.done[c.dataset.id]=c.checked;save("chacha-checks",checks);renderChecks();}));
+  document.querySelectorAll("#checklist [data-del]").forEach(b=>b.addEventListener("click",()=>{checks.custom=checks.custom.filter(x=>x.id!==b.dataset.del);delete checks.done[b.dataset.del];save("chacha-checks",checks);renderChecks();}));
+}
+
+/* shared Google Sheet: two columns, key and value */
+const SPLITS={"5k":"3.1","10k":"6.2","15k":"9.3","20k":"12.4","half":"13.1","25k":"15.5","30k":"18.6","35k":"21.7","40k":"24.9"};
+function parseCSV(t){const rows=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c=='"'&&t[i+1]=='"'){f+='"';i++;}else if(c=='"')q=false;else f+=c;}
+  else if(c=='"')q=true;else if(c==","){r.push(f);f="";}else if(c=="\n"){r.push(f);rows.push(r);r=[];f="";}else if(c!="\r")f+=c;}
+  if(f||r.length){r.push(f);rows.push(r);}return rows;}
+function to24(s){const m=String(s).trim().match(/^(\d{1,2}):(\d{2})\s*([ap])?/i);if(!m)return "";let h=+m[1];const ap=m[3]&&m[3].toLowerCase();
+  if(ap==="p"&&h<12)h+=12;if(ap==="a"&&h===12)h=0;if(!ap&&h<8)h+=12;return `${String(h).padStart(2,"0")}:${m[2]}`;}
+const sheetId=s=>{const m=String(s).match(/\/d\/([a-zA-Z0-9_-]{20,})/);return m?m[1]:(/^[a-zA-Z0-9_-]{20,}$/.test(s.trim())?s.trim():"");};
+async function sync(){
+  const id=sheetId(state.sheet),note=document.getElementById("syncNote");
+  if(!id){note.textContent="Not connected to a shared sheet. Times use what's entered on this device.";return;}
+  if(Object.keys(pending).length||Date.now()-lastWrite<20000)return;
+  try{
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&headers=1&t=${Date.now()}`);
+    if(!res.ok)throw new Error(res.status);
+    const kv={};parseCSV(await res.text()).forEach(r=>{if(r[0])kv[r[0].trim().toLowerCase()]=(r[1]||"").trim();});
+    const sp=(kv.last_split||"").toLowerCase().replace(/\s/g,"");
+    if(sp){const v=SPLITS[sp]||String(parseFloat(sp));const sel=document.getElementById("liveMile");
+      if(v!=="NaN"){if(![...sel.options].some(o=>o.value===v))sel.add(new Option(`${v} mi`,v));state.liveMile=v;}}
+    if(kv.last_split_time)state.liveTime=to24(kv.last_split_time);
+    const map={grandstand_seats:"seats",meet_spot:"meet",backup_spot:"backup",handoff_lafayette:"hoLaf",handoff_first:"hoFirst",handoff_fifth:"hoFifth",rafi_wear:"rafiWear"};
+    Object.entries(map).forEach(([k,f])=>{if(kv[k])state[f]=kv[k];});
+    if(/^(left|right)$/i.test(kv.grandstand_side||""))state.finishSide=kv.grandstand_side.toLowerCase();
+    if(/^(left|right)$/i.test(kv.handoff_hand||""))state.hoHand=kv.handoff_hand.toLowerCase();
+    const fa=(kv.fourth_ave||"").toLowerCase();
+    if(fa==="no"){state.crew.me=state.crew.me.filter(x=>x!=="fourth");state.crew.fr=state.crew.fr.filter(x=>x!=="fourth");}
+    if(fa==="yes"||fa==="maybe"){["me","fr"].forEach(k=>{if(!state.crew[k].includes("fourth"))state.crew[k].unshift("fourth");});
+      state.maybe=state.maybe.filter(x=>x!=="fourth");if(fa==="maybe")state.maybe.push("fourth");}
+    ["status_you","status_rafi","note"].forEach((k,i)=>{if(k in kv)state[["statusYou","statusRafi","note"][i]]=kv[k];});
+    const board=[["Where you are",kv.status_you],["Where Rafi is",kv.status_rafi],["Note for everyone",kv.note]].filter(x=>x[1]);
+    document.getElementById("board").innerHTML=board.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
+    note.textContent=`Synced with the shared sheet at ${clock(new Date().getHours()*60+new Date().getMinutes())}. This refreshes every minute.`;
+    FIELDS.forEach(f=>{const el=document.getElementById(f);if(el&&document.activeElement!==el)el.value=state[f];});
+    savePlan();renderCrew();render();
+  }catch(e){note.textContent="Couldn't reach the shared sheet. Check that it's shared as \"Anyone with the link can view\", or you may just have no signal. Times below still work from the last update.";}
+}
+
+/* editor mode: write to the sheet through an Apps Script web app */
+let pending={},timer=null,lastWrite=0;
+const editor=()=>!!(state.writeUrl&&state.editKey);
+function sheetValue(f){
+  if(f==="liveTime"){const t=hm(state.liveTime);return t===null?"":clock(t);}
+  if(f==="finishSide")return state.finishSide==="unknown"?"":state.finishSide;
+  return state[f];
+}
+function queue(key,val){if(!editor())return;pending[key]=val;clearTimeout(timer);timer=setTimeout(push,1500);
+  document.getElementById("writeNote").textContent="Saving to the sheet…";}
+function queueFourth(){const inPlan=state.crew.me.includes("fourth")||state.crew.fr.includes("fourth");
+  queue("fourth_ave",!inPlan?"no":isMaybe("fourth")?"maybe":"yes");}
+async function push(){
+  if(!editor()||!Object.keys(pending).length)return;
+  const updates={...pending},out=document.getElementById("writeNote");
+  try{
+    const res=await fetch(state.writeUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({key:state.editKey,updates})});
+    const j=await res.json();
+    if(!j.ok)throw new Error(j.error||"rejected");
+    Object.keys(updates).forEach(k=>{if(pending[k]===updates[k])delete pending[k];});
+    lastWrite=Date.now();
+    out.textContent=`Saved to the sheet at ${clock(new Date().getHours()*60+new Date().getMinutes())}.`;
+  }catch(e){
+    out.textContent=String(e.message).includes("key")?"The sheet rejected the edit key. Check it matches the one in the script."
+      :"Couldn't save, probably no signal. Your change is kept and will retry in 30 seconds.";
+    clearTimeout(timer);timer=setTimeout(push,30000);
+  }
+}
+function showEditor(){document.getElementById("editBox").hidden=!editor();}
+
+function bind(){
+  FIELDS.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.value=state[id];
+    el.addEventListener("input",()=>{state[id]=el.value;savePlan();render();
+      if(SHARED[id])queue(SHARED[id],sheetValue(id));
+      if(id==="writeUrl"||id==="editKey")showEditor();});});
+  showEditor();
+  document.getElementById("syncNow").addEventListener("click",sync);
+  document.getElementById("addItem").addEventListener("click",()=>{const el=document.getElementById("newItem"),t=el.value.trim();if(!t)return;checks.custom.push({id:"u"+Date.now(),t});el.value="";save("chacha-checks",checks);renderChecks();});
+  document.getElementById("newItem").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("addItem").click();});
+  document.getElementById("reset").addEventListener("click",()=>{checks.done={};save("chacha-checks",checks);renderChecks();});
+  document.getElementById("copy").addEventListener("click",async()=>{
+    const ta=document.getElementById("msg"),out=document.getElementById("copied");
+    try{await navigator.clipboard.writeText(ta.value);out.textContent="Copied. Paste it into your text to her.";}
+    catch(e){ta.focus();ta.select();out.textContent="Text selected. Use copy from your keyboard or phone menu.";}
+  });
+}
+
+(async()=>{await load();bind();renderCrew();renderDecisions();render();renderChecks();sync();setInterval(sync,60000);})();
+</script>
